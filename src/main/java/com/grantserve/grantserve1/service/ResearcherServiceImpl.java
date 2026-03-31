@@ -1,100 +1,70 @@
 package com.grantserve.grantserve1.service;
 
-import com.grantserve.grantserve1.dto.ReviewDto;
-import com.grantserve.grantserve1.entity.Review;
-import com.grantserve.grantserve1.entity.Proposal;
-import com.grantserve.grantserve1.entity.User;
-import com.grantserve.grantserve1.exception.ReviewNotFoundException;
-import com.grantserve.grantserve1.repository.ReviewRepository;
-import com.grantserve.grantserve1.repository.IProposalRepository;
-import com.grantserve.grantserve1.repository.UserRepository; // Added this
+import com.grantserve.grantserve1.dto.ResearcherDto;
+import com.grantserve.grantserve1.entity.Researcher;
+import com.grantserve.grantserve1.exception.ResearcherException;
+import com.grantserve.grantserve1.projection.IResearcherProjection;
+import com.grantserve.grantserve1.repository.ResearcherRepository;
 import com.grantserve.grantserve1.util.ClassUtilSeparator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.http.HttpStatus;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class ReviewServiceImpl implements IReviewService {
+public class ResearcherServiceImpl implements IResearcherService {
 
     @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
-    private IProposalRepository proposalRepository;
-
-    @Autowired
-    private UserRepository userRepository; // Added to fetch the User object
+    private ResearcherRepository researcherDAO;
 
     @Override
-    public String assignReviewer(ReviewDto reviewDto) {
-        log.info("Service: Assigning Reviewer ID {} to Proposal ID {}", reviewDto.reviewerId(), reviewDto.proposalId());
+    public String UpdateResearcher(Long id, ResearcherDto researcherDto) throws ResearcherException {
+        log.info("Attempting to update researcher with ID: {}", id);
 
-        // 1. Fetch Proposal
-        Proposal proposal = proposalRepository.findById(reviewDto.proposalId())
-                .orElseThrow(() -> new RuntimeException("Proposal not found"));
+        Researcher existingResearcher = researcherDAO.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Update failed: Researcher ID {} not found", id);
+                    return new ResearcherException("Researcher not found with ID: " + id, HttpStatus.NOT_FOUND);
+                });
 
-        // 2. Fetch User (Reviewer)
-        User reviewer = userRepository.findById(reviewDto.reviewerId())
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + reviewDto.reviewerId()));
+        ClassUtilSeparator.researcherRegisterUtil(researcherDto, existingResearcher);
+        researcherDAO.save(existingResearcher);
 
-        // 3. Check Role (Optional but recommended)
-        if (!"REVIEWER".equalsIgnoreCase(reviewer.getRole())) {
-            throw new RuntimeException("Selected user is not a Reviewer");
+        log.info("Successfully updated researcher with ID: {}", id);
+        return "Researcher Updated Successfully";
+    }
+
+    @Override
+    public IResearcherProjection fetchResearcher(Long id) throws ResearcherException {
+        log.info("Fetching researcher projection for ID: {}", id);
+
+        return researcherDAO.findResearcherByResearcherID(id)
+                .orElseThrow(() -> {
+                    log.warn("Fetch failed: No projection found for ID: {}", id);
+                    return new ResearcherException("Researcher not found with ID: " + id, HttpStatus.NOT_FOUND);
+                });
+    }
+
+    @Override
+    public String deleteResearcher(Long id) throws ResearcherException {
+        log.info("Request to delete researcher with ID: {}", id);
+
+        if (!researcherDAO.existsById(id)) {
+            log.error("Delete failed: ID {} does not exist", id);
+            throw new ResearcherException("Cannot delete. ID not found: " + id, HttpStatus.NOT_FOUND);
         }
 
-        // 4. Use Util to map Entity
-        Review review = ClassUtilSeparator.reviewUtil(reviewDto, proposal, reviewer);
-
-        reviewRepository.save(review);
-        log.info("Service: Review assigned successfully");
-        return "Review assigned successfully";
+        researcherDAO.deleteById(id);
+        log.info("Researcher with ID {} deleted successfully", id);
+        return "Researcher Deleted Successfully";
     }
 
     @Override
-    public List<Review> getReviewsByReviewer(long reviewerId) {
-        log.info("Service: Fetching reviews for Reviewer ID: {}", reviewerId);
-
-        // Updated to match the repository method for User-linked mapping
-        List<Review> reviews = reviewRepository.findByReviewer_UserID(reviewerId);
-
-        if (reviews.isEmpty()) {
-            log.warn("Service: No reviews found for Reviewer ID: {}", reviewerId);
-            throw new ReviewNotFoundException("No reviews found for Reviewer ID: " + reviewerId);
-        }
-
-        return reviews;
-    }
-
-    @Override
-    public Review getReviewById(long id) {
-        log.info("Service: Searching for review ID: {}", id);
-        return reviewRepository.findById(id)
-                .orElseThrow(() -> new ReviewNotFoundException("Review ID " + id + " not found"));
-    }
-
-    @Override
-    public String updateReview(long id, ReviewDto reviewDto) {
-        log.info("Service: Updating review ID: {}", id);
-        Review existing = getReviewById(id);
-
-        // Update fields from DTO
-        existing.setScore(reviewDto.score());
-        existing.setComments(reviewDto.comments());
-        existing.setStatus(reviewDto.status()); // Sets the Enum value
-        existing.setDate(reviewDto.date());
-
-        reviewRepository.save(existing);
-        log.info("Service: Review ID {} updated successfully", id);
-        return "Review updated successfully";
-    }
-
-    @Override
-    public String deleteReview(long id) {
-        log.info("Service: Deleting review ID: {}", id);
-        Review review = getReviewById(id);
-        reviewRepository.delete(review);
-        return "Review deleted successfully";
+    public Optional<Researcher> getResearcher(Long id) {
+        log.debug("Internal call to getResearcher Optional for ID: {}", id);
+        return researcherDAO.findById(id);
     }
 }
