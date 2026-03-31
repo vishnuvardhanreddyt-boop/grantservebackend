@@ -5,14 +5,11 @@ import com.grantserve.grantserve1.projection.IUserProjection;
 import com.grantserve.grantserve1.repository.IUserRepository;
 import com.grantserve.grantserve1.entity.User;
 import com.grantserve.grantserve1.exception.UserException;
-import com.grantserve.grantserve1.util.ClassUtilSeparator;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
