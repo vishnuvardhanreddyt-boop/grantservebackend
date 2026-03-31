@@ -17,12 +17,12 @@ public class User {
     private String status;
     private String password;
 
-    //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-   // private Researcher researcher;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Researcher researcher;
 
     // Getter and Setter
-   // public Researcher getResearcher() { return researcher; }
-   // public void setResearcher(Researcher researcher) { this.researcher = researcher; }
+    public Researcher getResearcher() { return researcher; }
+    public void setResearcher(Researcher researcher) { this.researcher = researcher; }
 
     public String getPassword() {
         return password;
