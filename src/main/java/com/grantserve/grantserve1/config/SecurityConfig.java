@@ -1,6 +1,6 @@
-package com.cts.grantserve.config;
+package com.grantserve.grantserve1.config;
 
-import com.cts.grantserve.filter.JwtFilter;
+import com.grantserve.grantserve1.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
