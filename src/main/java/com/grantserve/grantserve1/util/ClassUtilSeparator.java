@@ -66,7 +66,7 @@ public class ClassUtilSeparator {
 
         return newUser;
     }
-
+//
 //    public static Disbursement DisbursementUtil(DisbursementDto disbursementDto){
 //        Disbursement disbursement = new Disbursement();
 //        disbursement.setAmount(disbursementDto.amount());
@@ -81,7 +81,7 @@ public class ClassUtilSeparator {
 //        payment.setDate(LocalDate.now());
 //        return payment;
 //    }
-
+//
 //    public static Program programUtil(ProgramDto programDto) {
 //        Program program = new Program();
 //
@@ -95,7 +95,7 @@ public class ClassUtilSeparator {
 //
 //        return program;
 //    }
-
+//
 //    public static Budget budgetUtil(BudgetDto budgetDto) {
 //        Budget budget = new Budget();
 //
@@ -107,7 +107,7 @@ public class ClassUtilSeparator {
 //
 //        return budget;
 //    }
-
+//
 //    public static Evaluation evaluationUtil(EvaluationDto evaluationDto, GrantApplication application) {
 //        Evaluation eval = new Evaluation();
 //        eval.setApplication(application);
@@ -116,8 +116,8 @@ public class ClassUtilSeparator {
 //        eval.setNotes(evaluationDto.notes());
 //        return eval;
 //    }
-
-
+//
+//
 //    public static Review reviewUtil(ReviewDto dto, Proposal proposal, User reviewer) {
 //        Review review = new Review();
 //        review.setProposal(proposal);
@@ -128,7 +128,7 @@ public class ClassUtilSeparator {
 //        review.setStatus(dto.status());
 //        return review;
 //    }
-
+//
 //    public static ProgramDto convertToDto(Program program) {
 //        return new ProgramDto(
 //                program.getProgramID(),
@@ -140,7 +140,7 @@ public class ClassUtilSeparator {
 //                program.getStatus()
 //        );
 //    }
-
+//
 //    public static BudgetDto convertToDto(Budget budget) {
 //        return new BudgetDto(
 //                budget.getBudgetID(),
