@@ -1,5 +1,6 @@
 package com.grantserve.grantserve1.controller;
 
+
 import com.grantserve.grantserve1.dto.GrantApplicationDto;
 import com.grantserve.grantserve1.entity.GrantApplication;
 import com.grantserve.grantserve1.service.IGrantApplicationService;
@@ -52,4 +53,3 @@ public class GrantApplicationController {
     }
 
 }
-
