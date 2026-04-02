@@ -1,17 +1,16 @@
 package com.grantserve.grantserve1.service;
 
+
 import com.grantserve.grantserve1.entity.User;
-import com.grantserve.grantserve1.exception.UserException;
 import com.grantserve.grantserve1.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SecurityServiceImpl implements UserDetailsService {
+public class SecutiryServiceImpl implements UserDetailsService {
 
     @Autowired
     private IUserRepository iUserRepository;
